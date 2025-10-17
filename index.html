@@ -1,0 +1,663 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmAssist - Your Agricultural Partner</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background: linear-gradient(135deg, #2d5016 0%, #4a7c2c 100%);
+            padding: 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        .logo {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            padding: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo::before {
+            content: "🌾";
+            font-size: 35px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 5px;
+        }
+
+        .nav-menu li a {
+            color: white;
+            text-decoration: none;
+            padding: 25px 30px;
+            display: block;
+            font-size: 18px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-menu li a:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-bottom: 3px solid #ffd700;
+        }
+
+        .nav-menu li a.active {
+            background: rgba(255, 255, 255, 0.2);
+            border-bottom: 3px solid #ffd700;
+        }
+
+        /* Page Container */
+        .page {
+            display: none;
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Home Page */
+        #home {
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+                        url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1600') center/cover no-repeat fixed;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+
+        .hero-content {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 60px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            max-width: 800px;
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-content h1 {
+            font-size: 58px;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-content p {
+            font-size: 24px;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #4a7c2c 0%, #6ba83d 100%);
+            color: white;
+            padding: 18px 45px;
+            border: none;
+            border-radius: 50px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(74, 124, 44, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(74, 124, 44, 0.6);
+        }
+
+        /* Enquiry Page */
+        #enquiry {
+            background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
+                        url('https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=1600') center/cover no-repeat fixed;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 30px;
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 48px;
+            color: #2d5016;
+            margin-bottom: 50px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .enquiry-form {
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: #2d5016;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #4a7c2c;
+            box-shadow: 0 0 10px rgba(74, 124, 44, 0.2);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #4a7c2c 0%, #6ba83d 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(74, 124, 44, 0.4);
+        }
+
+        /* Weather Page */
+        #weather {
+            background: linear-gradient(rgba(135, 206, 250, 0.8), rgba(135, 206, 250, 0.8)),
+                        url('https://images.unsplash.com/photo-1592210454359-9043f067919b?w=1600') center/cover no-repeat fixed;
+        }
+
+        .weather-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 30px;
+        }
+
+        .weather-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .weather-input {
+            margin-bottom: 30px;
+        }
+
+        .weather-input input {
+            padding: 15px 25px;
+            font-size: 18px;
+            border: 2px solid #4a7c2c;
+            border-radius: 50px;
+            width: 300px;
+            margin-right: 15px;
+        }
+
+        .weather-btn {
+            background: linear-gradient(135deg, #4a7c2c 0%, #6ba83d 100%);
+            color: white;
+            padding: 15px 35px;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .weather-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(74, 124, 44, 0.4);
+        }
+
+        .weather-info {
+            margin-top: 40px;
+            font-size: 20px;
+            color: #2d5016;
+        }
+
+        .weather-icon {
+            font-size: 80px;
+            margin: 20px 0;
+        }
+
+        /* News Page */
+        #news {
+            background: linear-gradient(rgba(255, 250, 240, 0.95), rgba(255, 250, 240, 0.95)),
+                        url('https://images.unsplash.com/photo-1586771107445-d3ca888129ff?w=1600') center/cover no-repeat fixed;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 30px;
+        }
+
+        .news-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .news-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        .news-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #4a7c2c 0%, #6ba83d 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+        }
+
+        .news-content {
+            padding: 25px;
+        }
+
+        .news-title {
+            font-size: 22px;
+            color: #2d5016;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .news-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .news-date {
+            color: #999;
+            font-size: 14px;
+        }
+
+        /* Other Page */
+        #other {
+            background: linear-gradient(rgba(240, 255, 240, 0.95), rgba(240, 255, 240, 0.95)),
+                        url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1600') center/cover no-repeat fixed;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 30px;
+        }
+
+        .resource-card {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-top: 5px solid #4a7c2c;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .resource-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .resource-title {
+            font-size: 24px;
+            color: #2d5016;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .resource-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .resource-link {
+            color: #4a7c2c;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .resource-link:hover {
+            color: #6ba83d;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-content">
+            <div class="logo">FarmAssist</div>
+            <ul class="nav-menu">
+                <li><a href="#" onclick="showPage('home')" class="active">Home</a></li>
+                <li><a href="#" onclick="showPage('enquiry')">Enquiry</a></li>
+                <li><a href="#" onclick="showPage('weather')">Weather</a></li>
+                <li><a href="#" onclick="showPage('news')">News</a></li>
+                <li><a href="#" onclick="showPage('other')">Other</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="home" class="page active">
+        <div class="hero-content">
+            <h1>Welcome to FarmAssist</h1>
+            <p>Your trusted partner in modern agriculture. Get real-time weather updates, latest farming news, and expert guidance to grow better.</p>
+            <button class="cta-button" onclick="showPage('enquiry')">Get Started</button>
+        </div>
+    </div>
+
+    <!-- Enquiry Page -->
+    <div id="enquiry" class="page">
+        <div class="container">
+            <h1 class="page-title">📝 Send Us Your Enquiry</h1>
+            <div class="enquiry-form">
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" placeholder="Enter your phone number" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Type of Enquiry</label>
+                        <select required>
+                            <option value="">Select type</option>
+                            <option value="crop">Crop Advisory</option>
+                            <option value="soil">Soil Testing</option>
+                            <option value="equipment">Equipment Rental</option>
+                            <option value="market">Market Prices</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Your Message</label>
+                        <textarea placeholder="Describe your query in detail..." required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Submit Enquiry</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Weather Page -->
+    <div id="weather" class="page">
+        <div class="weather-container">
+            <h1 class="page-title">🌤️ Weather Forecast</h1>
+            <div class="weather-card">
+                <div class="weather-input">
+                    <input type="text" id="cityInput" placeholder="Enter your city name">
+                    <button class="weather-btn" onclick="getWeather()">Check Weather</button>
+                </div>
+                <div class="weather-info" id="weatherInfo">
+                    <div class="weather-icon">☀️</div>
+                    <h2>Enter a city to get weather information</h2>
+                    <p>Stay updated with real-time weather forecasts to plan your farming activities better.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- News Page -->
+    <div id="news" class="page">
+        <div class="container">
+            <h1 class="page-title">📰 Latest Agricultural News</h1>
+        </div>
+        <div class="news-grid">
+            <div class="news-card">
+                <div class="news-image">🌱</div>
+                <div class="news-content">
+                    <h3 class="news-title">New Sustainable Farming Techniques</h3>
+                    <p class="news-description">Discover innovative methods that increase crop yield while protecting the environment and reducing costs.</p>
+                    <p class="news-date">October 15, 2025</p>
+                </div>
+            </div>
+            <div class="news-card">
+                <div class="news-image">💧</div>
+                <div class="news-content">
+                    <h3 class="news-title">Water Conservation in Agriculture</h3>
+                    <p class="news-description">Learn about the latest drip irrigation systems and water management strategies for optimal crop growth.</p>
+                    <p class="news-date">October 12, 2025</p>
+                </div>
+            </div>
+            <div class="news-card">
+                <div class="news-image">🚜</div>
+                <div class="news-content">
+                    <h3 class="news-title">Government Subsidy Programs</h3>
+                    <p class="news-description">New equipment subsidy schemes announced. Find out if you're eligible for financial assistance.</p>
+                    <p class="news-date">October 10, 2025</p>
+                </div>
+            </div>
+            <div class="news-card">
+                <div class="news-image">🌾</div>
+                <div class="news-content">
+                    <h3 class="news-title">Record Harvest Season Predicted</h3>
+                    <p class="news-description">Experts forecast excellent yields this season due to favorable weather conditions across regions.</p>
+                    <p class="news-date">October 8, 2025</p>
+                </div>
+            </div>
+            <div class="news-card">
+                <div class="news-image">📱</div>
+                <div class="news-content">
+                    <h3 class="news-title">Digital Farming Revolution</h3>
+                    <p class="news-description">How mobile apps and IoT sensors are transforming traditional farming practices for better results.</p>
+                    <p class="news-date">October 5, 2025</p>
+                </div>
+            </div>
+            <div class="news-card">
+                <div class="news-image">🌍</div>
+                <div class="news-content">
+                    <h3 class="news-title">Organic Farming Trends</h3>
+                    <p class="news-description">Growing demand for organic produce creates new opportunities for farmers in domestic and export markets.</p>
+                    <p class="news-date">October 3, 2025</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Other Page -->
+    <div id="other" class="page">
+        <div class="container">
+            <h1 class="page-title">🔧 Additional Resources</h1>
+        </div>
+        <div class="resources-grid">
+            <div class="resource-card">
+                <div class="resource-icon">📚</div>
+                <h3 class="resource-title">Farming Guides</h3>
+                <p class="resource-description">Access comprehensive guides on crop cultivation, pest management, and seasonal planning.</p>
+                <a href="#" class="resource-link">View Guides →</a>
+            </div>
+            <div class="resource-card">
+                <div class="resource-icon">💰</div>
+                <h3 class="resource-title">Market Prices</h3>
+                <p class="resource-description">Check daily updated prices for crops, seeds, fertilizers, and agricultural commodities.</p>
+                <a href="#" class="resource-link">Check Prices →</a>
+            </div>
+            <div class="resource-card">
+                <div class="resource-icon">🎓</div>
+                <h3 class="resource-title">Training Programs</h3>
+                <p class="resource-description">Enroll in free training courses on modern farming techniques and equipment handling.</p>
+                <a href="#" class="resource-link">Enroll Now →</a>
+            </div>
+            <div class="resource-card">
+                <div class="resource-icon">🤝</div>
+                <h3 class="resource-title">Community Forum</h3>
+                <p class="resource-description">Connect with fellow farmers, share experiences, and get advice from agricultural experts.</p>
+                <a href="#" class="resource-link">Join Forum →</a>
+            </div>
+            <div class="resource-card">
+                <div class="resource-icon">🏦</div>
+                <h3 class="resource-title">Loan Information</h3>
+                <p class="resource-description">Explore various agricultural loan schemes with low interest rates and flexible repayment.</p>
+                <a href="#" class="resource-link">Learn More →</a>
+            </div>
+            <div class="resource-card">
+                <div class="resource-icon">📞</div>
+                <h3 class="resource-title">Helpline</h3>
+                <p class="resource-description">Get instant support from our team of agricultural experts. Available 24/7 for emergencies.</p>
+                <a href="#" class="resource-link">Contact Us →</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // Remove active class from all nav links
+            const navLinks = document.querySelectorAll('.nav-menu a');
+            navLinks.forEach(link => link.classList.remove('active'));
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Add active class to clicked nav link
+            event.target.classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        function getWeather() {
+            const city = document.getElementById('cityInput').value;
+            const weatherInfo = document.getElementById('weatherInfo');
+            
+            if (city.trim() === '') {
+                alert('Please enter a city name');
+                return;
+            }
+            
+            // Simulated weather data
+            const weatherData = {
+                temp: Math.floor(Math.random() * 15) + 20,
+                condition: ['Sunny', 'Cloudy', 'Rainy', 'Partly Cloudy'][Math.floor(Math.random() * 4)],
+                humidity: Math.floor(Math.random() * 40) + 40,
+                wind: Math.floor(Math.random() * 15) + 5
+            };
+            
+            const icons = {
+                'Sunny': '☀️',
+                'Cloudy': '☁️',
+                'Rainy': '🌧️',
+                'Partly Cloudy': '⛅'
+            };
+            
+            weatherInfo.innerHTML = `
+                <div class="weather-icon">${icons[weatherData.condition]}</div>
+                <h2>${city}</h2>
+                <h1 style="font-size: 48px; margin: 20px 0;">${weatherData.temp}°C</h1>
+                <p style="font-size: 24px; margin-bottom: 30px;">${weatherData.condition}</p>
+                <div style="display: flex; justify-content: center; gap: 40px; font-size: 18px;">
+                    <div>💧 Humidity: ${weatherData.humidity}%</div>
+                    <div>💨 Wind: ${weatherData.wind} km/h</div>
+                </div>
+            `;
+        }
+
+        // Form submission handler
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your enquiry! We will get back to you soon.');
+            this.reset();
+        });
+
+        // Allow Enter key to trigger weather search
+        document.getElementById('cityInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                getWeather();
+            }
+        });
+    </script>
+</body>
+</html>
