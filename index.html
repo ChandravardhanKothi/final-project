@@ -3,683 +3,1217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kisan Saathi - Farmer's Digital Companion</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background: #faf7f2;
-            color: #2c1810;
-        }
-
-        /* Navigation Bar - Clean and Simple */
-        nav {
-            background: linear-gradient(135deg, #8b6f47 0%, #6d5633 100%);
-            padding: 0;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .nav-content {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .nav-menu {
-            display: flex;
-            list-style: none;
-            gap: 0;
-        }
-
-        .nav-menu li {
-            flex: 1;
-        }
-
-        .nav-menu li a {
-            color: white;
-            text-decoration: none;
-            padding: 22px 50px;
-            display: block;
-            text-align: center;
-            font-size: 18px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border-bottom: 4px solid transparent;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .nav-menu li a:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-bottom: 4px solid #4a7c2c;
-        }
-
-        .nav-menu li a.active {
-            background: rgba(255, 255, 255, 0.15);
-            border-bottom: 4px solid #4a7c2c;
-        }
-
-        /* Page Container */
-        .page {
-            display: none;
-            min-height: 100vh;
-            padding-top: 70px;
-        }
-
-        .page.active {
-            display: block;
-        }
-
-        /* Home Page */
-        #home {
-            background: #faf7f2;
-            padding-bottom: 100px;
-        }
-
-        .hero-section {
-            display: flex;
-            align-items: center;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 80px 40px;
-            gap: 60px;
-        }
-
-        .hero-text {
-            flex: 1;
-        }
-
-        .hero-text h1 {
-            font-size: 56px;
-            color: #2c1810;
-            margin-bottom: 25px;
-            line-height: 1.2;
-        }
-
-        .hero-text h1 span {
-            color: #4a7c2c;
-        }
-
-        .hero-text p {
-            font-size: 20px;
-            color: #5a4a3a;
-            margin-bottom: 35px;
-            line-height: 1.7;
-        }
-
-        .hero-image {
-            flex: 1;
-            text-align: center;
-        }
-
-        .hero-image img {
-            max-width: 100%;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-        }
-
-        .cta-button {
-            background: linear-gradient(135deg, #4a7c2c 0%, #6ba83d 100%);
-            color: white;
-            padding: 18px 45px;
-            border: none;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(74, 124, 44, 0.3);
-        }
-
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(74, 124, 44, 0.4);
-        }
-
-        .features-section {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 60px 40px;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 42px;
-            color: #2c1810;
-            margin-bottom: 60px;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 35px;
-        }
-
-        .feature-card {
-            background: white;
-            padding: 35px;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-            border-top: 4px solid #4a7c2c;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-        }
-
-        .feature-icon {
-            font-size: 50px;
-            margin-bottom: 20px;
-        }
-
-        .feature-title {
-            font-size: 22px;
-            color: #2c1810;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-
-        .feature-description {
-            color: #5a4a3a;
-            line-height: 1.6;
-            font-size: 15px;
-        }
-
-        /* Enquiry Page */
-        #enquiry {
-            background: #faf7f2;
-            padding-bottom: 100px;
-        }
-
-        .enquiry-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 60px 40px;
-        }
-
-        .page-header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .page-header h1 {
-            font-size: 42px;
-            color: #2c1810;
-            margin-bottom: 15px;
-        }
-
-        .page-header p {
-            font-size: 18px;
-            color: #5a4a3a;
-        }
-
-        .enquiry-layout {
-            display: flex;
-            gap: 40px;
-            align-items: flex-start;
-        }
-
-        .enquiry-form-container {
-            flex: 1;
-            background: white;
-            padding: 45px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        }
-
-        .enquiry-image {
-            flex: 1;
-            text-align: center;
-        }
-
-        .enquiry-image img {
-            max-width: 100%;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 16px;
-            color: #2c1810;
-            font-weight: 600;
-        }
-
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 14px;
-            border: 2px solid #e0d5c7;
-            border-radius: 8px;
-            font-size: 15px;
-            transition: all 0.3s ease;
-            background: #faf7f2;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #4a7c2c;
-            background: white;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        /* Photo Upload Section */
-        .photo-upload-container {
-            margin-bottom: 25px;
-        }
-
-        .upload-box {
-            width: 100%;
-            height: 300px;
-            border: 3px dashed #8b6f47;
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: #faf7f2;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .upload-box:hover {
-            border-color: #4a7c2c;
-            background: #f0ebe0;
-        }
-
-        .upload-box.has-image {
-            border-style: solid;
-            border-color: #4a7c2c;
-        }
-
-        .upload-icon {
-            font-size: 60px;
-            margin-bottom: 15px;
-            color: #8b6f47;
-        }
-
-        .upload-text {
-            font-size: 16px;
-            color: #5a4a3a;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-
-        .upload-hint {
-            font-size: 13px;
-            color: #8b8b8b;
-        }
-
-        .preview-image {
-            max-width: 100%;
-            max-height: 100%;
-            display: none;
-        }
-
-        .preview-image.show {
-            display: block;
-        }
-
-        .upload-controls {
-            display: none;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .upload-controls.show {
-            display: flex;
-        }
-
-        .upload-btn,
-        .change-btn {
-            padding: 12px 30px;
-            border: none;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .upload-btn {
-            background: linear-gradient(135deg, #4a7c2c 0%, #6ba83d 100%);
-            color: white;
-        }
-
-        .upload-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(74, 124, 44, 0.4);
-        }
-
-        .change-btn {
-            background: #8b6f47;
-            color: white;
-        }
-
-        .change-btn:hover {
-            background: #6d5633;
-        }
-
-        #fileInput {
-            display: none;
-        }
-
-        .submit-btn {
-            background: linear-gradient(135deg, #4a7c2c 0%, #6ba83d 100%);
-            color: white;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 8px;
-            font-size: 17px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.3s ease;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(74, 124, 44, 0.4);
-        }
-
-        /* Weather Page */
-        #weather {
-            background: #faf7f2;
-            padding-bottom: 100px;
-        }
-
-        .weather-layout {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 60px 40px;
-            display: flex;
-            gap: 40px;
-            align-items: flex-start;
-        }
-
-        .weather-main {
-            flex: 2;
-        }
-
-        .weather-card {
-            background: white;
-            padding: 45px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        }
-
-        .weather-input {
-            margin-bottom: 35px;
-            display: flex;
-            gap: 15px;
-        }
-
-        .weather-input input {
-            flex: 1;
-            padding: 15px 20px;
-            font-size: 16px;
-            border: 2px solid #e0d5c7;
-            border-radius: 8px;
-            background: #faf7f2;
-        }
-
-        .weather-input input:focus {
-            outline: none;
-            border-color: #4a7c2c;
-            background: white;
-        }
-
-        .weather-btn {
-            background: linear-gradient(135deg, #4a7c2c 0%, #6ba83d 100%);
-            color: white;
-            padding: 15px 35px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .weather-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(74, 124, 44, 0.4);
-        }
-
-        .weather-info {
-            text-align: center;
-            padding: 20px;
-        }
-
-        .weather-icon {
-            font-size: 80px;
-            margin: 20px 0;
-        }
-
-        .weather-sidebar {
-            flex: 1;
-        }
-
-        .weather-sidebar img {
-            width: 100%;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        /* News Page */
-        #news {
-            background: #faf7f2;
-            padding-bottom: 100px;
-        }
-
-        .news-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 60px 40px;
-        }
-
-        .news-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 30px;
-            margin-bottom: 60px;
-        }
-
-        .news-card {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-        }
-
-        .news-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .news-image {
-            width: 100%;
-            height: 200px;
-            background: linear-gradient(135deg, #8b6f47 0%, #6d5633 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 70px;
-        }
-
-        .news-content {
-            padding: 25px;
-        }
-
-        .news-title {
-            font-size: 20px;
-            color: #2c1810;
-            margin-bottom: 12px;
-            font-weight: 600;
-        }
-
-        .news-description {
-            color: #5a4a3a;
-            line-height: 1.6;
-            margin-bottom: 15px;
-            font-size: 15px;
-        }
-
-        .news-date {
-            color: #8b8b8b;
-            font-size: 13px;
-        }
-
-        /* Other Page */
-        #other {
-            background: #faf7f2;
-            padding-bottom: 100px;
-        }
-
-        .resources-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 60px 40px;
-        }
-
-        .resources-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-bottom: 60px;
-        }
-
-        .resource-card {
-            background: white;
-            padding: 35px;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-            border-top: 4px solid #8b6f47;
-        }
-
-        .resource-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-        }
-
-        .resource-icon {
-            font-size: 55px;
-            margin-bottom: 20px;
-        }
-
-        .resource-title {
-            font-size: 22px;
-            color: #2c1810;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-
-        .resource-description {
-            color: #5a4a3a;
-            line-height: 1.6;
-            margin-bottom: 20px;
-            font-size: 15px;
-        }
-
-        .resource-link {
-            color: #4a7c2c;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 15px;
-            transition: all 0.3s ease;
-        }
-
-        .resource-link:hover {
-            color: #6ba83d;
-        }
-
-        /* Advertisement Space */
-        .ad-space {
-            background: white;
-            padding: 40px;
-            text-align: center;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            border: 2px dashed #e0d5c7;
-        }
-
-        .ad-space h3 {
-            color: #8b6f47;
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
-
-        .ad-space p {
-            color: #8b8b8b;
-            font-size: 14px;
-        }
-
-        @media (max-width: 768px) {
-            .hero-section {
-                flex-direction: column;
-            }
-
-            .enquiry-layout {
-                flex-direction: column;
-            }
-
-            .weather-layout {
-                flex-direction: column;
-            }
-
-            .nav-menu li a {
-                padding: 20px 25px;
-                font-size: 16px;
-            }
-        }
-    </style>
+    <title>Agri-advisory agent by Quadsquad</title>
 </head>
 <body>
     <!-- Navigation -->
     <nav>
         <div class="nav-content">
             <ul class="nav-menu">
-                <li><a href="#" onclick="showPage('enquiry')" class="active">Enquiry</a></li>
-                <li><a href="#" onclick="showPage('weather')">Weather</a></li>
-                <li><a href="#" onclick="showPage('news')">News</a></li>
-                <li><a href="#" onclick="showPage('other')">Other</a></li>
+                <li><a href="#enquiry" class="active">Enquiry</a></li>
+                <li><a href="#weather">Weather</a></li>
+                <li><a href="#news">News</a></li>
+                <li><a href="#other">Other</a></li>
             </ul>
         </div>
     </nav>
 
     <!-- Enquiry Page -->
-    <div id="enquiry" class="page active">
+    <section id="enquiry" class="page active">
+        <div class="enquiry-container">
+            <div class="page-header">
+                <h1>please upload your photo here</h1>
+                <p>Upload your crop images (leaves or affected parts). If any disease is detected, we’ll diagnose it and provide a detailed description. Get instant insights to help your crops stay healthy</p>
+            </div>
+            
+            <div class="enquiry-layout">
+                <div class="enquiry-form-container">
+                    <form id="contactForm">
+                        <div class="photo-upload-container">
+                            <label>Upload Photo (Optional)</label>
+                            <div class="upload-box" id="uploadBox">
+                                <div class="upload-icon">📷</div>
+                                <div class="upload-text">Click to select image</div>
+                                <div class="upload-hint">Upload crop/soil/pest images for better assistance</div>
+                                <img id="previewImage" class="preview-image" alt="Preview">
+                            </div>
+                            <input type="file" id="fileInput" accept="image/*">
+                            <div class="upload-controls" id="uploadControls">
+                                <button type="button" class="upload-btn">Upload Photo</button>
+                                <button type="button" class="change-btn">Change Photo</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">ask anything</label>
+                            <textarea id="message" name="message" placeholder="Describe your query in detail..." required></textarea>
+                        </div>
+
+                        <button type="submit" class="submit-btn">Submit Enquiry</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advertisement Space -->
+        <div class="enquiry-container">
+            <div class="ad-space">
+                <h3>Advertisement Space</h3>
+                <p>Your ads can appear here</p>
+            </div>
+        </div>
+    </section>
+
+  <!-- Weather Page -->
+    <section id="weather" class="page">
+        <div class="weather-container">
+            <div class="page-header">
+                <h1>Weather & Crop Planning</h1>
+                <p>Select any date from the calendar below to view detailed weather information. Plan your farming activities easily with daily insights and predictions.</p>
+            </div>
+
+            <!-- Weather API Configuration -->
+            <div class="api-config-section">
+                <div class="config-card">
+                    <label for="weather-api-key">Weather API Key:</label>
+                    <input type="text" id="weather-api-key" placeholder="Enter your weather API key" class="api-input">
+                    <label for="location-input">Location:</label>
+                    <input type="text" id="location-input" placeholder="Enter your city or village name" class="api-input">
+                    <button class="api-save-btn">Save Configuration</button>
+                </div>
+            </div>
+
+            <!-- Calendar Section -->
+            <div class="calendar-section">
+                <div class="calendar-header">
+                    <button class="calendar-nav-btn" id="prev-month">← Previous</button>
+                    <h2 id="current-month-year">October 2025</h2>
+                    <button class="calendar-nav-btn" id="next-month">Next →</button>
+                </div>
+                
+                <div class="calendar-grid">
+                    <div class="calendar-day-header">Sun</div>
+                    <div class="calendar-day-header">Mon</div>
+                    <div class="calendar-day-header">Tue</div>
+                    <div class="calendar-day-header">Wed</div>
+                    <div class="calendar-day-header">Thu</div>
+                    <div class="calendar-day-header">Fri</div>
+                    <div class="calendar-day-header">Sat</div>
+                    
+                    <!-- Calendar dates will be populated by JavaScript -->
+                    <div id="calendar-dates" class="calendar-dates">
+                        <!-- Dates will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seasonal Crop Recommendation (Before date selection) -->
+            <div class="seasonal-crop-section" id="seasonal-crops">
+                <h2>Suitable Crops for Current Season</h2>
+                <div class="seasonal-info">
+                    <div class="season-badge">
+                        <span class="season-icon">🍂</span>
+                        <span class="season-name">Kharif Season (June - October)</span>
+                    </div>
+                    <div class="crop-recommendations">
+                        <div class="crop-item">
+                            <span class="crop-icon">🌾</span>
+                            <div class="crop-details">
+                                <h3>Rice</h3>
+                                <p>Best for monsoon season with adequate water availability</p>
+                            </div>
+                        </div>
+                        <div class="crop-item">
+                            <span class="crop-icon">🌽</span>
+                            <div class="crop-details">
+                                <h3>Maize</h3>
+                                <p>Suitable for well-drained soil with moderate rainfall</p>
+                            </div>
+                        </div>
+                        <div class="crop-item">
+                            <span class="crop-icon">🫘</span>
+                            <div class="crop-details">
+                                <h3>Soybean</h3>
+                                <p>Ideal for current monsoon conditions</p>
+                            </div>
+                        </div>
+                        <div class="crop-item">
+                            <span class="crop-icon">🌱</span>
+                            <div class="crop-details">
+                                <h3>Cotton</h3>
+                                <p>Requires warm weather and moderate rainfall</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Selected Date Weather & Crop Info (Appears after date selection) -->
+            <div class="selected-date-section" id="selected-date-info" style="display: none;">
+                <h2>Weather & Crop Recommendations for <span id="selected-date-display"></span></h2>
+                
+                <div class="weather-crop-layout">
+                    <!-- Weather Information -->
+                    <div class="weather-details-card">
+                        <h3>Weather Forecast</h3>
+                        <div class="weather-display">
+                            <div class="weather-main-info">
+                                <div class="weather-icon-large" id="weather-icon-display">🌤️</div>
+                                <div class="temperature" id="temperature-display">28°C</div>
+                                <div class="weather-condition" id="condition-display">Partly Cloudy</div>
+                            </div>
+                            <div class="weather-details-grid">
+                                <div class="weather-detail-item">
+                                    <span class="detail-icon">💧</span>
+                                    <span class="detail-label">Humidity</span>
+                                    <span class="detail-value" id="humidity-display">65%</span>
+                                </div>
+                                <div class="weather-detail-item">
+                                    <span class="detail-icon">💨</span>
+                                    <span class="detail-label">Wind Speed</span>
+                                    <span class="detail-value" id="wind-display">12 km/h</span>
+                                </div>
+                                <div class="weather-detail-item">
+                                    <span class="detail-icon">🌧️</span>
+                                    <span class="detail-label">Rainfall</span>
+                                    <span class="detail-value" id="rainfall-display">20%</span>
+                                </div>
+                                <div class="weather-detail-item">
+                                    <span class="detail-icon">☀️</span>
+                                    <span class="detail-label">UV Index</span>
+                                    <span class="detail-value" id="uv-display">6</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Crop Recommendation for Selected Date -->
+                    <div class="crop-recommendation-card">
+                        <h3>Best Crops for This Day</h3>
+                        <div class="daily-crop-list">
+                            <div class="daily-crop-item">
+                                <span class="crop-icon-large">🌾</span>
+                                <div class="daily-crop-info">
+                                    <h4>Rice</h4>
+                                    <p>Excellent conditions for transplanting</p>
+                                    <span class="suitability-badge good">Highly Suitable</span>
+                                </div>
+                            </div>
+                            <div class="daily-crop-item">
+                                <span class="crop-icon-large">🌽</span>
+                                <div class="daily-crop-info">
+                                    <h4>Maize</h4>
+                                    <p>Good for sowing activities</p>
+                                    <span class="suitability-badge moderate">Suitable</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="farming-activities">
+                            <h4>Recommended Activities:</h4>
+                            <ul>
+                                <li>✓ Suitable for field preparation</li>
+                                <li>✓ Good for pesticide application</li>
+                                <li>✓ Ideal for irrigation</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Crop Planning Section -->
+            <div class="crop-planning-section">
+                <h2>Plan Your Crop Cultivation</h2>
+                <p class="planning-subtitle">Select crop and duration to get a customized farming plan</p>
+                
+                <div class="planning-form-card">
+                    <form id="crop-planning-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="crop-select">Select Crop</label>
+                                <select id="crop-select" name="crop-select" required>
+                                    <option value="">Choose a crop</option>
+                                    <optgroup label="Kharif Crops (June - October)">
+                                        <option value="rice">Rice</option>
+                                        <option value="maize">Maize</option>
+                                        <option value="cotton">Cotton</option>
+                                        <option value="soybean">Soybean</option>
+                                        <option value="groundnut">Groundnut</option>
+                                        <option value="jowar">Jowar (Sorghum)</option>
+                                        <option value="bajra">Bajra (Pearl Millet)</option>
+                                        <option value="tur">Tur (Pigeon Pea)</option>
+                                    </optgroup>
+                                    <optgroup label="Rabi Crops (November - March)">
+                                        <option value="wheat">Wheat</option>
+                                        <option value="barley">Barley</option>
+                                        <option value="gram">Gram (Chickpea)</option>
+                                        <option value="peas">Peas</option>
+                                        <option value="mustard">Mustard</option>
+                                        <option value="linseed">Linseed</option>
+                                    </optgroup>
+                                    <optgroup label="Zaid Crops (March - June)">
+                                        <option value="cucumber">Cucumber</option>
+                                        <option value="watermelon">Watermelon</option>
+                                        <option value="muskmelon">Muskmelon</option>
+                                        <option value="bitter-gourd">Bitter Gourd</option>
+                                    </optgroup>
+                                    <optgroup label="Vegetables">
+                                        <option value="tomato">Tomato</option>
+                                        <option value="potato">Potato</option>
+                                        <option value="onion">Onion</option>
+                                        <option value="cabbage">Cabbage</option>
+                                        <option value="cauliflower">Cauliflower</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="duration-select">Growth Duration</label>
+                                <select id="duration-select" name="duration-select" required>
+                                    <option value="">Select duration</option>
+                                    <option value="short">Short Duration (60-90 days)</option>
+                                    <option value="medium">Medium Duration (90-120 days)</option>
+                                    <option value="long">Long Duration (120-150 days)</option>
+                                    <option value="very-long">Very Long Duration (150+ days)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="start-date">Planned Start Date</label>
+                            <input type="date" id="start-date" name="start-date" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="land-size">Land Size (in acres)</label>
+                            <input type="number" id="land-size" name="land-size" placeholder="Enter land size" min="0.5" step="0.5">
+                        </div>
+
+                        <button type="submit" class="generate-plan-btn">Generate Crop Plan</button>
+                    </form>
+                </div>
+
+                <!-- Generated Plan Display -->
+                <div class="generated-plan" id="generated-plan" style="display: none;">
+                    <h3>Your Customized Crop Plan</h3>
+                    <div class="plan-timeline">
+                        <!-- Timeline will be generated dynamically -->
+                        <div class="timeline-item">
+                            <div class="timeline-marker">1</div>
+                            <div class="timeline-content">
+                                <h4>Land Preparation</h4>
+                                <p class="timeline-date">Days 1-7</p>
+                                <ul class="timeline-tasks">
+                                    <li>Ploughing and leveling the field</li>
+                                    <li>Apply organic manure</li>
+                                    <li>Check soil moisture</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-marker">2</div>
+                            <div class="timeline-content">
+                                <h4>Sowing/Planting</h4>
+                                <p class="timeline-date">Days 8-14</p>
+                                <ul class="timeline-tasks">
+                                    <li>Seed treatment</li>
+                                    <li>Sowing at proper depth</li>
+                                    <li>First irrigation</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-marker">3</div>
+                            <div class="timeline-content">
+                                <h4>Growth Stage</h4>
+                                <p class="timeline-date">Days 15-60</p>
+                                <ul class="timeline-tasks">
+                                    <li>Regular irrigation schedule</li>
+                                    <li>Weed management</li>
+                                    <li>First fertilizer application</li>
+                                    <li>Pest monitoring</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-marker">4</div>
+                            <div class="timeline-content">
+                                <h4>Flowering/Fruiting</h4>
+                                <p class="timeline-date">Days 61-90</p>
+                                <ul class="timeline-tasks">
+                                    <li>Second fertilizer application</li>
+                                    <li>Disease prevention</li>
+                                    <li>Maintain moisture levels</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-marker">5</div>
+                            <div class="timeline-content">
+                                <h4>Harvesting</h4>
+                                <p class="timeline-date">Days 91-100</p>
+                                <ul class="timeline-tasks">
+                                    <li>Monitor crop maturity</li>
+                                    <li>Arrange harvesting equipment</li>
+                                    <li>Post-harvest management</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="plan-summary">
+                        <h4>Plan Summary</h4>
+                        <div class="summary-grid">
+                            <div class="summary-item">
+                                <span class="summary-label">Crop:</span>
+                                <span class="summary-value" id="plan-crop">Rice</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Duration:</span>
+                                <span class="summary-value" id="plan-duration">100 days</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Start Date:</span>
+                                <span class="summary-value" id="plan-start">June 15, 2025</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Expected Harvest:</span>
+                                <span class="summary-value" id="plan-harvest">September 23, 2025</span>
+                            </div>
+                        </div>
+                        <button class="download-plan-btn">Download Plan as PDF</button>
+                    </div>
+                </div>
+            </div>
+
+        <!-- Advertisement Space -->
+        <div class="weather-layout">
+            <div class="weather-ad-container">
+                <div class="ad-space">
+                    <h3>Advertisement Space</h3>
+                    <p>Your ads can appear here</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- News Page -->
+    <section id="news" class="page">
+        <div class="news-container">
+            <div class="page-header">
+                <h1>Agricultural News & Updates</h1>
+                <p>Stay informed with the latest farming news</p>
+            </div>
+            
+            <div class="news-grid">
+                <article class="news-card">
+                    <div class="news-image">🌾</div>
+                    <div class="news-content">
+                        <h3 class="news-title">Small Land Holdings Challenge Farmers</h3>
+                        <p class="news-description">Fragmented land holdings continue to affect mechanization and productivity. Learn about solutions to improve farm efficiency despite limited acreage.</p>
+                        <p class="news-date">October 17, 2025</p>
+                    </div>
+                </article>
+
+                <article class="news-card">
+                    <div class="news-image">🏪</div>
+                    <div class="news-content">
+                        <h3 class="news-title">New Cold Storage Facilities Coming</h3>
+                        <p class="news-description">Government announces expansion of storage infrastructure to reduce post-harvest losses of fruits and vegetables.</p>
+                        <p class="news-date">October 16, 2025</p>
+                    </div>
+                </article>
+
+                <article class="news-card">
+                    <div class="news-image">🚜</div>
+                    <div class="news-content">
+                        <h3 class="news-title">Farm Mechanization Subsidy Extended</h3>
+                        <p class="news-description">Extended deadline for equipment subsidy applications. Small farmers encouraged to adopt modern machinery.</p>
+                        <p class="news-date">October 15, 2025</p>
+                    </div>
+                </article>
+ <!-- News Page -->
+    <section id="news" class="page">
+        <div class="notification-container">
+            <div class="page-header">
+                <h1>📢 Notification Center</h1>
+                <p>Important updates and alerts for farmers</p>
+            </div>
+            
+            <div class="notifications-list">
+                <!-- Notification 1 -->
+                <div class="notification-item">
+                    <div class="notification-header">
+                        <div class="notification-icon weather-icon">🌦️</div>
+                        <div class="notification-meta">
+                            <span class="notification-date">October 18, 2025</span>
+                            <span class="notification-time">08:30 AM</span>
+                        </div>
+                    </div>
+                    <div class="notification-content">
+                        <h3 class="notification-title">Weather Alert - Hanamkonda Region</h3>
+                        <div class="notification-body">
+                            <div class="notification-section">
+                                <h4>🌧️ Weather now:</h4>
+                                <p>Light rain and scattered thunderstorms are expected in Hanamkonda over the next few days.</p>
+                            </div>
+                            
+                            <div class="notification-section">
+                                <h4>⚡ Recent change:</h4>
+                                <p>Sudden heavy showers and thunderstorms have been reported nearby — this can bring quick rain and strong winds. Take care of young plants.</p>
+                            </div>
+                            
+                            <div class="notification-section">
+                                <h4>💧 Soil water:</h4>
+                                <p>Groundwater and soil moisture have risen in parts of the district — soil is fairly wet now. Check fields before sowing.</p>
+                            </div>
+                            
+                            <div class="notification-section">
+                                <h4>📊 Market note:</h4>
+                                <p>Nearby Warangal market rates — tomato and potato prices are moving; check local mandi for today's exact rate before selling.</p>
+                            </div>
+                            
+                            <div class="notification-advice">
+                                <strong>⚠️ Short advice:</strong> Delay spraying or fertilizer before heavy rain. Cover seeds and move tools to dry place.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notification 2 -->
+                <div class="notification-item">
+                    <div class="notification-header">
+                        <div class="notification-icon scheme-icon">💰</div>
+                        <div class="notification-meta">
+                            <span class="notification-date">October 17, 2025</span>
+                            <span class="notification-time">02:15 PM</span>
+                        </div>
+                    </div>
+                    <div class="notification-content">
+                        <h3 class="notification-title">Rythu Bandhu Scheme - Payment Update</h3>
+                        <div class="notification-body">
+                            <p class="notification-highlight">Good news for farmers! Under the Rythu Bandhu Scheme, the Telangana government has started giving financial help for the new crop season. Each farmer will get <strong>₹5,000 per acre</strong> to buy seeds, fertilizers, and other needs before sowing.</p>
+                            
+                            <p>Farmers are advised to check their bank accounts linked with Aadhaar to confirm the deposit. If payment is not received, visit your local agriculture office or check the official Rythu Bandhu portal for details.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notification 3 -->
+                <div class="notification-item">
+                    <div class="notification-header">
+                        <div class="notification-icon document-icon">📄</div>
+                        <div class="notification-meta">
+                            <span class="notification-date">October 16, 2025</span>
+                            <span class="notification-time">11:00 AM</span>
+                        </div>
+                    </div>
+                    <div class="notification-content">
+                        <h3 class="notification-title">Pattadar Passbook - Apply Now</h3>
+                        <div class="notification-body">
+                            <p>Farmers, you can apply for a <strong>Pattadar Passbook</strong> at your local MRO office or MeeSeva center.</p>
+                            
+                            <p>This passbook proves that you own your land and is needed for Rythu Bandhu, crop loans, and other government help.</p>
+                            
+                            <div class="notification-section">
+                                <h4>📋 Required documents:</h4>
+                                <ul>
+                                    <li>Aadhaar card</li>
+                                    <li>Land papers</li>
+                                    <li>Recent passport-size photo</li>
+                                </ul>
+                            </div>
+                            
+                            <p>Once verified, the passbook will be issued in your name.</p>
+                            
+                            <div class="notification-advice">
+                                <strong>💡 Important:</strong> Keep it safe — it is your official proof of land ownership.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advertisement Space -->
+            <div class="ad-space">
+                <h3>Advertisement Space</h3>
+                <p>Your ads can appear here</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="other" class="page">
+        <div class="other-container">
+            <div class="page-header">
+                <h1>Farmer Resources Hub</h1>
+                <p>Market prices, machinery rental, storage, government schemes & products</p>
+            </div>
+
+            <!-- Quick Navigation Pills -->
+            <div class="section-nav">
+                <button class="nav-pill active" data-section="market-prices">Market Prices</button>
+                <button class="nav-pill" data-section="machinery-rental">Rent Machinery</button>
+                <button class="nav-pill" data-section="storage-units">Storage Units</button>
+                <button class="nav-pill" data-section="meeseva">MeeSeva Schemes</button>
+                <button class="nav-pill" data-section="products">Farm Products</button>
+            </div>
+
+            <!-- Market Prices Section -->
+            <div class="content-section active" id="market-prices">
+                <h2>📊 Market Price Trends</h2>
+                
+                <!-- General Price Graph -->
+                <div class="price-graph-card">
+                    <h3>Weekly Vegetable Price Trends - Warangal Mandi</h3>
+                    <div class="graph-placeholder">
+                        <canvas id="priceChart"></canvas>
+                        <div class="graph-legend">
+                            <div class="legend-item">
+                                <span class="legend-color tomato"></span> Tomato
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color potato"></span> Potato
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color onion"></span> Onion
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color cabbage"></span> Cabbage
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Monthly Profit Analysis -->
+                <div class="monthly-profit-section">
+                    <h3>Monthly Crop Profitability Guide</h3>
+                    <div class="profit-cards-grid">
+                        <div class="profit-card">
+                            <div class="month-header">
+                                <span class="month-name">January</span>
+                                <span class="season-tag">Rabi</span>
+                            </div>
+                            <div class="top-crop">
+                                <span class="crop-emoji">🌾</span>
+                                <div class="crop-info">
+                                    <h4>Wheat</h4>
+                                    <p class="profit-label">Highest profit margin</p>
+                                    <p class="price-range">₹2,200 - ₹2,500/quintal</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="profit-card">
+                            <div class="month-header">
+                                <span class="month-name">February</span>
+                                <span class="season-tag">Rabi</span>
+                            </div>
+                            <div class="top-crop">
+                                <span class="crop-emoji">🧅</span>
+                                <div class="crop-info">
+                                    <h4>Onion</h4>
+                                    <p class="profit-label">High demand period</p>
+                                    <p class="price-range">₹1,800 - ₹2,200/quintal</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="profit-card">
+                            <div class="month-header">
+                                <span class="month-name">March</span>
+                                <span class="season-tag">Zaid</span>
+                            </div>
+                            <div class="top-crop">
+                                <span class="crop-emoji">🍉</span>
+                                <div class="crop-info">
+                                    <h4>Watermelon</h4>
+                                    <p class="profit-label">Summer favorite</p>
+                                    <p class="price-range">₹800 - ₹1,200/quintal</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="profit-card">
+                            <div class="month-header">
+                                <span class="month-name">April</span>
+                                <span class="season-tag">Zaid</span>
+                            </div>
+                            <div class="top-crop">
+                                <span class="crop-emoji">🥒</span>
+                                <div class="crop-info">
+                                    <h4>Cucumber</h4>
+                                    <p class="profit-label">Peak season</p>
+                                    <p class="price-range">₹600 - ₹900/quintal</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="profit-card">
+                            <div class="month-header">
+                                <span class="month-name">May</span>
+                                <span class="season-tag">Pre-Kharif</span>
+                            </div>
+                            <div class="top-crop">
+                                <span class="crop-emoji">🥭</span>
+                                <div class="crop-info">
+                                    <h4>Mango</h4>
+                                    <p class="profit-label">Premium prices</p>
+                                    <p class="price-range">₹3,000 - ₹5,000/quintal</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="profit-card">
+                            <div class="month-header">
+                                <span class="month-name">June</span>
+                                <span class="season-tag">Kharif</span>
+                            </div>
+                            <div class="top-crop">
+                                <span class="crop-emoji">🌾</span>
+                                <div class="crop-info">
+                                    <h4>Rice</h4>
+                                    <p class="profit-label">Monsoon essential</p>
+                                    <p class="price-range">₹1,800 - ₹2,100/quintal</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="profit-card">
+                            <div class="month-header">
+                                <span class="month-name">July</span>
+                                <span class="season-tag">Kharif</span>
+                            </div>
+                            <div class="top-crop">
+                                <span class="crop-emoji">🌽</span>
+                                <div class="crop-info">
+                                    <h4>Maize</h4>
+                                    <p class="profit-label">Good returns</p>
+                                    <p class="price-range">₹1,500 - ₹1,800/quintal</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="profit-card">
+                            <div class="month-header">
+                                <span class="month-name">August</span>
+                                <span class="season-tag">Kharif</span>
+                            </div>
+                            <div class="top-crop">
+                                <span class="crop-emoji">🫘</span>
+                                <div class="crop-info">
+                                    <h4>Soybean</h4>
+                                    <p class="profit-label">High demand</p>
+                                    <p class="price-range">₹3,500 - ₹4,000/quintal</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="profit-card">
+                            <div class="month-header">
+                                <span class="month-name">September</span>
+                                <span class="season-tag">Kharif</span>
+                            </div>
+                            <div class="top-crop">
+                                <span class="crop-emoji">🌱</span>
+                                <div class="crop-info">
+                                    <h4>Cotton</h4>
+                                    <p class="profit-label">Export quality</p>
+                                    <p class="price-range">₹5,500 - ₹6,500/quintal</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="profit-card">
+                            <div class="month-header">
+                                <span class="month-name">October</span>
+                                <span class="season-tag">Post-Kharif</span>
+                            </div>
+                            <div class="top-crop">
+                                <span class="crop-emoji">🥔</span>
+                                <div class="crop-info">
+                                    <h4>Potato</h4>
+                                    <p class="profit-label">Festival demand</p>
+                                    <p class="price-range">₹1,200 - ₹1,600/quintal</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="profit-card">
+                            <div class="month-header">
+                                <span class="month-name">November</span>
+                                <span class="season-tag">Rabi</span>
+                            </div>
+                            <div class="top-crop">
+                                <span class="crop-emoji">🧄</span>
+                                <div class="crop-info">
+                                    <h4>Garlic</h4>
+                                    <p class="profit-label">Winter crop</p>
+                                    <p class="price-range">₹4,000 - ₹5,500/quintal</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="profit-card">
+                            <div class="month-header">
+                                <span class="month-name">December</span>
+                                <span class="season-tag">Rabi</span>
+                            </div>
+                            <div class="top-crop">
+                                <span class="crop-emoji">🥕</span>
+                                <div class="crop-info">
+                                    <h4>Carrot</h4>
+                                    <p class="profit-label">Peak season</p>
+                                    <p class="price-range">₹1,000 - ₹1,400/quintal</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Machinery Rental Section -->
+            <div class="content-section" id="machinery-rental">
+                <h2>🚜 Rent Farm Machinery</h2>
+                
+                <!-- Login to Post Machinery -->
+                <div class="rental-login-card">
+                    <h3>List Your Machinery for Rent</h3>
+                    <p>Own tractors or equipment? Earn extra income by renting them to fellow farmers</p>
+                    <button class="login-post-btn" id="show-rental-form">Login to Post →</button>
+                </div>
+
+                <!-- Rental Form (Hidden by default) -->
+                <div class="rental-form-modal" id="rental-form-modal" style="display: none;">
+                    <div class="modal-content">
+                        <span class="close-modal">&times;</span>
+                        <h3>Post Machinery for Rent</h3>
+                        <form id="machinery-rental-form">
+                            <div class="form-group">
+                                <label for="owner-name">Your Name</label>
+                                <input type="text" id="owner-name" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="machinery-type">Machinery Type</label>
+                                <select id="machinery-type" required>
+                                    <option value="">Select machinery</option>
+                                    <option value="tractor">Tractor</option>
+                                    <option value="harvester">Harvester</option>
+                                    <option value="plough">Plough</option>
+                                    <option value="sprayer">Sprayer</option>
+                                    <option value="seeder">Seed Drill</option>
+                                    <option value="thresher">Thresher</option>
+                                    <option value="rotavator">Rotavator</option>
+                                    <option value="cultivator">Cultivator</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="machinery-photo">Upload Photo</label>
+                                <input type="file" id="machinery-photo" accept="image/*" required>
+                                <div class="photo-preview" id="machinery-preview"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="rental-price">Rental Price (per day)</label>
+                                <input type="number" id="rental-price" placeholder="₹ Enter amount" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="machinery-description">Description</label>
+                                <textarea id="machinery-description" placeholder="Mention model, year, condition, etc." required></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contact-number">Contact Number</label>
+                                <input type="tel" id="contact-number" placeholder="Enter your mobile number" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="location">Location</label>
+                                <input type="text" id="location" placeholder="Village/Town name" required>
+                            </div>
+
+                            <button type="submit" class="submit-rental-btn">Post Machinery</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Available Machinery Cards -->
+                <div class="machinery-grid">
+                    <!-- Sample Card 1 -->
+                    <div class="machinery-card">
+                        <div class="machinery-image-container">
+                            <img src="https://images.unsplash.com/photo-1589395937772-3c83eab7abdf?w=400" alt="Tractor">
+                            <div class="availability-badge">Available</div>
+                        </div>
+                        <div class="machinery-details">
+                            <div class="machinery-header">
+                                <h3>Mahindra 575 DI Tractor</h3>
+                                <div class="price-tag">₹2,500/day</div>
+                            </div>
+                            <p class="machinery-description">2019 model, 47 HP, excellent condition with all attachments. Suitable for ploughing, leveling, and transport.</p>
+                            <div class="owner-info">
+                                <div class="owner-detail">
+                                    <span class="info-icon">👤</span>
+                                    <span>Ramesh Kumar</span>
+                                </div>
+                                <div class="owner-detail">
+                                    <span class="info-icon">📍</span>
+                                    <span>Hanamkonda</span>
+                                </div>
+                                <div class="owner-detail">
+                                    <span class="info-icon">📞</span>
+                                    <span>9876543210</span>
+                                </div>
+                            </div>
+                            <button class="contact-btn">Contact Owner</button>
+                        </div>
+                    </div>
+
+                    <!-- Sample Card 2 -->
+                    <div class="machinery-card">
+                        <div class="machinery-image-container">
+                            <img src="https://images.unsplash.com/photo-1625066483687-e8481fc5ca8e?w=400" alt="Harvester">
+                            <div class="availability-badge">Available</div>
+                        </div>
+                        <div class="machinery-details">
+                            <div class="machinery-header">
+                                <h3>Mini Combine Harvester</h3>
+                                <div class="price-tag">₹3,500/day</div>
+                            </div>
+                            <p class="machinery-description">Suitable for rice and wheat harvesting. Can cover 2-3 acres per day. Well maintained machine.</p>
+                            <div class="owner-info">
+                                <div class="owner-detail">
+                                    <span class="info-icon">👤</span>
+                                    <span>Suresh Reddy</span>
+                                </div>
+                                <div class="owner-detail">
+                                    <span class="info-icon">📍</span>
+                                    <span>Warangal</span>
+                                </div>
+                                <div class="owner-detail">
+                                    <span class="info-icon">📞</span>
+                                    <span>9123456789</span>
+                                </div>
+                            </div>
+                            <button class="contact-btn">Contact Owner</button>
+                        </div>
+                    </div>
+
+                    <!-- Sample Card 3 -->
+                    <div class="machinery-card">
+                        <div class="machinery-image-container">
+                            <img src="https://images.unsplash.com/photo-1530267981375-f0db8c2f8b8e?w=400" alt="Rotavator">
+                            <div class="availability-badge">Available</div>
+                        </div>
+                        <div class="machinery-details">
+                            <div class="machinery-header">
+                                <h3>Rotavator with Tractor</h3>
+                                <div class="price-tag">₹2,000/day</div>
+                            </div>
+                            <p class="machinery-description">6 feet rotavator for field preparation. Perfect for seedbed preparation and weed control.</p>
+                            <div class="owner-info">
+                                <div class="owner-detail">
+                                    <span class="info-icon">👤</span>
+                                    <span>Venkat Rao</span>
+                                </div>
+                                <div class="owner-detail">
+                                    <span class="info-icon">📍</span>
+                                    <span>Kazipet</span>
+                                </div>
+                                <div class="owner-detail">
+                                    <span class="info-icon">📞</span>
+                                    <span>9988776655</span>
+                                </div>
+                            </div>
+                            <button class="contact-btn">Contact Owner</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Storage Units Section -->
+            <div class="content-section" id="storage-units">
+                <h2>🏪 Nearby Storage Units</h2>
+                <p class="section-description">Find cold storage and warehouses near you for post-harvest storage</p>
+                
+                <div class="storage-list">
+                    <div class="storage-card">
+                        <div class="storage-header">
+                            <h3>Warangal Cold Storage</h3>
+                            <span class="storage-type-badge">Cold Storage</span>
+                        </div>
+                        <div class="storage-info">
+                            <div class="info-row">
+                                <span class="info-label">📍 Location:</span>
+                                <span>Ring Road, Warangal - 506002</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">📦 Capacity:</span>
+                                <span>5000 MT</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">🌡️ Temperature:</span>
+                                <span>-2°C to 4°C</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">💰 Rate:</span>
+                                <span>₹800 per MT per month</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">📞 Contact:</span>
+                                <span>0870-2422345</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">✓ Suitable for:</span>
+                                <span>Fruits, Vegetables, Dairy</span>
+                            </div>
+                        </div>
+                        <button class="storage-contact-btn">Get Directions</button>
+                    </div>
+
+                    <div class="storage-card">
+                        <div class="storage-header">
+                            <h3>Hanamkonda Warehouse</h3>
+                            <span class="storage-type-badge warehouse">Dry Storage</span>
+                        </div>
+                        <div class="storage-info">
+                            <div class="info-row">
+                                <span class="info-label">📍 Location:</span>
+                                <span>Industrial Area, Hanamkonda - 506001</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">📦 Capacity:</span>
+                                <span>8000 MT</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">🏢 Type:</span>
+                                <span>Covered Warehouse</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">💰 Rate:</span>
+                                <span>₹400 per MT per month</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">📞 Contact:</span>
+                                <span>0870-2456789</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">✓ Suitable for:</span>
+                                <span>Grains, Pulses, Seeds</span>
+                            </div>
+                        </div>
+                        <button class="storage-contact-btn">Get Directions</button>
+                    </div>
+
+                    <div class="storage-card">
+                        <div class="storage-header">
+                            <h3>Kazipet Agro Storage</h3>
+                            <span class="storage-type-badge warehouse">Multi-Purpose</span>
+                        </div>
+                        <div class="storage-info">
+                            <div class="info-row">
+                                <span class="info-label">📍 Location:</span>
+                                <span>NH-163, Kazipet - 506003</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">📦 Capacity:</span>
+                                <span>3000 MT</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">🏢 Type:</span>
+                                <span>Climate Controlled</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">💰 Rate:</span>
+                                <span>₹600 per MT per month</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">📞 Contact:</span>
+                                <span>9876501234</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">✓ Suitable for:</span>
+                                <span>All crops, Vegetables</span>
+                            </div>
+                        </div>
+                        <button class="storage-contact-btn">Get Directions</button>
+                    </div>
+
+                    <div class="storage-card">
+                        <div class="storage-header">
+                            <h3>Jangaon FCI Godown</h3>
+                            <span class="storage-type-badge warehouse">Government</span>
+                        </div>
+                        <div class="storage-info">
+                            <div class="info-row">
+                                <span class="info-label">📍 Location:</span>
+                                <span>Bypass Road, Jangaon - 506167</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">📦 Capacity:</span>
+                                <span>10000 MT</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">🏢 Type:</span>
+                                <span>FCI Certified Storage</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">💰 Rate:</span>
+                                <span>₹350 per MT per month</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">📞 Contact:</span>
+                                <span>08718-234567</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">✓ Suitable for:</span>
+                                <span>Rice, Wheat, Paddy</span>
+                            </div>
+                        </div>
+                        <button class="storage-contact-btn">Get Directions</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MeeSeva Schemes Section -->
+            <div class="content-section" id="meeseva">
+                <h2>🏛️ Government Schemes - MeeSeva Portal</h2>
+                <p class="section-description">Apply for agricultural schemes and get financial assistance</p>
+                
+                <div class="schemes-list">
+                    <a href="#" class="scheme-card" data-scheme="rythu-bandhu">
+                        <div class="scheme-icon-container">
+                            <span class="scheme-icon">💰</span>
+                        </div>
+                        <div class="scheme-content">
+                            <h3>Rythu Bandhu Scheme</h3>
+                            <p>Get ₹5,000 per acre financial assistance for crop cultivation</p>
+                            <div class="scheme-details">
+                                <span class="detail-item">📋 Documents: Aadhaar, Bank Details</span>
+                                <span class="detail-item">⏱️ Processing: 15-30 days</span>
+                            </div>
+                        </div>
+                        <div class="apply-arrow">→</div>
+                    </a>
+
+                    <a href="#" class="scheme-card" data-scheme="pm-kisan">
+                        <div class="scheme-icon-container">
+                            <span class="scheme-icon">🌾</span>
+                        </div>
+                        <div class="scheme-content">
+                            <h3>PM-KISAN Scheme</h3>
+                            <p>Receive ₹6,000 annually in three installments directly to bank</p>
+                            <div class="scheme-details">
+                                <span class="detail-item">📋 Documents: Land Records, Aadhaar</span>
+                                <span class="detail-item">⏱️ Processing: 30-45 days</span>
+                            </div>
+                        </div>
+                        <div class="apply-arrow">→</div>
+                    </a>
+
+                    <a href="#" class="scheme-card" data-scheme="pattadar-passbook">
+                        <div class="scheme-icon-container">
+                            <span class="scheme-icon">📄</span>
+                        </div>
+                        <div class="scheme-content">
+                            <h3>Pattadar Passbook</h3>
+                            <p>Official land ownership proof required for all agricultural schemes</p>
+                            <div class="scheme-details">
+                                <span class="detail-item">📋 Documents: Land Papers, Aadhaar, Photo</span>
+                                <span class="detail-item">⏱️ Processing: 7-15 days</span>
+                            </div>
+                        </div>
+                        <div class="apply-arrow">→</div>
+                    </a>
+
+                    <a href="#" class="scheme-card" data-scheme="ration-card">
+                        <div class="scheme-icon-container">
+                            <span class="scheme-icon">🍚</span>
+                        </div>
+                        <div class="scheme-content">
+                            <h3>Ration Card</h3>
+                            <p>Access subsidized food grains and qualify for various benefits</p>
+                            <div class="scheme-details">
+                                <span class="detail-item">📋 Documents: Aadhaar, Address Proof, Income Certificate</span>
+                                <span class="detail-item">⏱️ Processing: 30 days</span>
+                            </div>
+                        </div>
+                        <div class="apply-arrow">→</div>
+                    </a>
+
+                    <a href="#" class="scheme-card" data-scheme="kisan-credit-card">
+                        <div class="scheme-icon-container">
+                            <span class="scheme-icon">💳</span>
+                        </div>
+                        <div class="scheme-content">
+                            <h3>Kisan Credit Card (KCC)</h3>
+                            <p>Get credit facility for crop cultivation and agricultural needs</p>
+                            <div class="scheme-details">
+                                <span class="detail-item">📋 Documents: Land Records, Bank Account, Identity Proof</span>
+                                <span class="detail-item">⏱️ Processing: 15-20 days</span>
+                            </div>
+                        </div>
+                        <div class="apply-arrow">→</div>
+                    </a>
+
+                    <a href="#" class="scheme-card" data-scheme="crop-insurance">
+                        <div class="scheme-icon-container">
+                            <span class="scheme-icon">🛡️</span>
+                        </div>
+                        <div class="scheme-content">
+                            <h3>Pradhan Mantri Fasal Bima Yojana</h3>
+                            <p>Protect your crops against natural calamities and get insurance coverage</p>
+                            <div class="scheme-details">
+                                <span class="detail-item">📋 Documents: Land Records, Aadhaar, Bank Account</span>
+                                <span class="detail-item">⏱️ Apply before: Crop sowing period</span>
+                            </div>
+                        </div>
+                        <div class="apply-arrow">→</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Farm Products Section -->
+            <div class="content-section" id="products">
+                <h2>🛒 Best Farm Products</h2>
+                <p class="section-description">Quality seeds, fertilizers, and equipment at competitive prices</p>
+                
+                <div class="products-grid">
+                    <!-- Product 1 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1625246319830-3e2e89b9fec6?w=300" alt="Seeds">
+                            <div class="discount-badge">20% OFF</div>
+                        </div>
+                        <div class="product-info">
+                            <h4>Hybrid Rice Seeds</h4>
+                            <p class="product-brand">Mahyco Brand<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kisan Saathi - Farmer's Digital Companion</title>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-content">
+            <ul class="nav-menu">
+                <li><a href="#enquiry" class="active">Enquiry</a></li>
+                <li><a href="#weather">Weather</a></li>
+                <li><a href="#news">News</a></li>
+                <li><a href="#other">Other</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Enquiry Page -->
+    <section id="enquiry" class="page active">
         <div class="enquiry-container">
             <div class="page-header">
                 <h1>Submit Your Enquiry</h1>
@@ -690,24 +1224,28 @@
                 <div class="enquiry-form-container">
                     <form id="contactForm">
                         <div class="form-group">
-                            <label>Full Name</label>
-                            <input type="text" placeholder="Enter your full name" required>
+                            <label for="fullname">Full Name</label>
+                            <input type="text" id="fullname" name="fullname" placeholder="Enter your full name" required>
                         </div>
+
                         <div class="form-group">
-                            <label>Phone Number</label>
-                            <input type="tel" placeholder="Enter your phone number" required>
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
                         </div>
+
                         <div class="form-group">
-                            <label>Email Address</label>
-                            <input type="email" placeholder="Enter your email address">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="Enter your email address">
                         </div>
+
                         <div class="form-group">
-                            <label>Farm Location</label>
-                            <input type="text" placeholder="Enter your village/city">
+                            <label for="location">Farm Location</label>
+                            <input type="text" id="location" name="location" placeholder="Enter your village/city">
                         </div>
+
                         <div class="form-group">
-                            <label>Type of Enquiry</label>
-                            <select required>
+                            <label for="enquiry-type">Type of Enquiry</label>
+                            <select id="enquiry-type" name="enquiry-type" required>
                                 <option value="">Select enquiry type</option>
                                 <option value="crop">Crop Advisory</option>
                                 <option value="soil">Soil Testing</option>
@@ -722,23 +1260,24 @@
                         
                         <div class="photo-upload-container">
                             <label>Upload Photo (Optional)</label>
-                            <div class="upload-box" id="uploadBox" onclick="document.getElementById('fileInput').click()">
+                            <div class="upload-box" id="uploadBox">
                                 <div class="upload-icon">📷</div>
                                 <div class="upload-text">Click to select image</div>
                                 <div class="upload-hint">Upload crop/soil/pest images for better assistance</div>
                                 <img id="previewImage" class="preview-image" alt="Preview">
                             </div>
-                            <input type="file" id="fileInput" accept="image/*" onchange="previewFile()">
+                            <input type="file" id="fileInput" accept="image/*">
                             <div class="upload-controls" id="uploadControls">
-                                <button type="button" class="upload-btn" onclick="uploadPhoto()">Upload Photo</button>
-                                <button type="button" class="change-btn" onclick="changePhoto()">Change Photo</button>
+                                <button type="button" class="upload-btn">Upload Photo</button>
+                                <button type="button" class="change-btn">Change Photo</button>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label>Your Message</label>
-                            <textarea placeholder="Describe your query in detail..." required></textarea>
+                            <label for="message">Your Message</label>
+                            <textarea id="message" name="message" placeholder="Describe your query in detail..." required></textarea>
                         </div>
+
                         <button type="submit" class="submit-btn">Submit Enquiry</button>
                     </form>
                 </div>
@@ -748,358 +1287,13 @@
                 </div>
             </div>
         </div>
-
-        <!-- Advertisement Space -->
-        <div class="enquiry-container">
-            <div class="ad-space">
-                <h3>Advertisement Space</h3>
-                <p>Your ads can appear here</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Weather Page -->
-    <div id="weather" class="page">
-        <div class="weather-layout">
-            <div class="weather-main">
-                <div class="page-header">
-                    <h1>Weather Forecast</h1>
-                    <p>Check real-time weather for your location</p>
-                </div>
-                <div class="weather-card">
-                    <div class="weather-input">
-                        <input type="text" id="cityInput" placeholder="Enter your city or village name">
-                        <button class="weather-btn" onclick="getWeather()">Check Weather</button>
-                    </div>
-                    <div class="weather-info" id="weatherInfo">
-                        <div class="weather-icon">🌤️</div>
-                        <h2>Enter your location</h2>
-                        <p style="color: #5a4a3a; margin-top: 15px;">Get accurate weather information to plan your farming activities</p>
-                    </div>
-                </div>
-            </div>
-            <div class="weather-sidebar">
-                <img src="https://images.unsplash.com/photo-1592210454359-9043f067919b?w=500" alt="Weather">
-            </div>
-        </div>
-
-        <!-- Advertisement Space -->
-        <div class="weather-layout">
-            <div style="width: 100%; padding: 0 40px;">
-                <div class="ad-space">
-                    <h3>Advertisement Space</h3>
-                    <p>Your ads can appear here</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- News Page -->
-    <div id="news" class="page">
-        <div class="news-container">
-            <div class="page-header">
-                <h1>Agricultural News & Updates</h1>
-                <p>Stay informed with the latest farming news</p>
-            </div>
-            
-            <div class="news-grid">
-                <div class="news-card">
-                    <div class="news-image">🌾</div>
-                    <div class="news-content">
-                        <h3 class="news-title">Small Land Holdings Challenge Farmers</h3>
-                        <p class="news-description">Fragmented land holdings continue to affect mechanization and productivity. Learn about solutions to improve farm efficiency despite limited acreage.</p>
-                        <p class="news-date">October 17, 2025</p>
-                    </div>
-                </div>
-
-                <div class="news-card">
-                    <div class="news-image">🏪</div>
-                    <div class="news-content">
-                        <h3 class="news-title">New Cold Storage Facilities Coming</h3>
-                        <p class="news-description">Government announces expansion of storage infrastructure to reduce post-harvest losses of fruits and vegetables.</p>
-                        <p class="news-date">October 16, 2025</p>
-                    </div>
-                </div>
-
-                <div class="news-card">
-                    <div class="news-image">🚜</div>
-                    <div class="news-content">
-                        <h3 class="news-title">Farm Mechanization Subsidy Extended</h3>
-                        <p class="news-description">Extended deadline for equipment subsidy applications. Small farmers encouraged to adopt modern machinery.</p>
-                        <p class="news-date">October 15, 2025</p>
-                    </div>
-                </div>
-
-                <div class="news-card">
-                    <div class="news-image">💰</div>
-                    <div class="news-content">
-                        <h3 class="news-title">Low-Interest Agricultural Loans Available</h3>
-                        <p class="news-description">Financial institutions announce improved credit access for marginal farmers with simplified documentation process.</p>
-                        <p class="news-date">October 14, 2025</p>
-                    </div>
-                </div>
-
-                <div class="news-card">
-                    <div class="news-image">💧</div>
-                    <div class="news-content">
-                        <h3 class="news-title">Micro-Irrigation Systems Gaining Popularity</h3>
-                        <p class="news-description">Drip irrigation adoption increases as farmers seek water conservation solutions amid depleting groundwater levels.</p>
-                        <p class="news-date">October 12, 2025</p>
-                    </div>
-                </div>
-
-                <div class="news-card">
-                    <div class="news-image">🌱</div>
-                    <div class="news-content">
-                        <h3 class="news-title">Organic Farming Training Programs</h3>
-                        <p class="news-description">New certification courses launched to help farmers transition from chemical to organic farming methods.</p>
-                        <p class="news-date">October 10, 2025</p>
-                    </div>
-                </div>
-            </div>
-
             <!-- Advertisement Space -->
             <div class="ad-space">
                 <h3>Advertisement Space</h3>
                 <p>Your ads can appear here</p>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- Other Page -->
-    <div id="other" class="page">
-        <div class="resources-container">
-            <div class="page-header">
-                <h1>Resources & Support</h1>
-                <p>Access tools and information for better farming</p>
-            </div>
-            
-            <div class="resources-grid">
-                <div class="resource-card">
-                    <div class="resource-icon">📚</div>
-                    <h3 class="resource-title">Farming Guidelines</h3>
-                    <p class="resource-description">Comprehensive guides on crop cultivation, pest control, and sustainable farming practices for better yields.</p>
-                    <a href="#" class="resource-link">Read More →</a>
-                </div>
-
-                <div class="resource-card">
-                    <div class="resource-icon">📊</div>
-                    <h3 class="resource-title">Market Prices</h3>
-                    <p class="resource-description">Real-time mandi prices, crop rates, and market trends to help you sell at the right time.</p>
-                    <a href="#" class="resource-link">Check Prices →</a>
-                </div>
-
-                <div class="resource-card">
-                    <div class="resource-icon">🎓</div>
-                    <h3 class="resource-title">Training Programs</h3>
-                    <p class="resource-description">Free workshops on modern techniques, equipment handling, and agricultural best practices.</p>
-                    <a href="#" class="resource-link">Enroll Now →</a>
-                </div>
-
-                <div class="resource-card">
-                    <div class="resource-icon">🏦</div>
-                    <h3 class="resource-title">Loan Information</h3>
-                    <p class="resource-description">Details on agricultural loans, subsidies, and financial schemes with easy application process.</p>
-                    <a href="#" class="resource-link">Learn More →</a>
-                </div>
-
-                <div class="resource-card">
-                    <div class="resource-icon">🌡️</div>
-                    <h3 class="resource-title">Soil Testing</h3>
-                    <p class="resource-description">Book soil testing services to understand nutrient levels and optimize fertilizer usage.</p>
-                    <a href="#" class="resource-link">Book Test →</a>
-                </div>
-
-                <div class="resource-card">
-                    <div class="resource-icon">🤝</div>
-                    <h3 class="resource-title">Farmer Community</h3>
-                    <p class="resource-description">Join discussions, share experiences, and learn from fellow farmers in your region.</p>
-                    <a href="#" class="resource-link">Join Forum →</a>
-                </div>
-
-                <div class="resource-card">
-                    <div class="resource-icon">🛡️</div>
-                    <h3 class="resource-title">Crop Insurance</h3>
-                    <p class="resource-description">Protect your crops against natural calamities. Get information on insurance schemes and claims.</p>
-                    <a href="#" class="resource-link">Get Insured →</a>
-                </div>
-
-                <div class="resource-card">
-                    <div class="resource-icon">📞</div>
-                    <h3 class="resource-title">Expert Helpline</h3>
-                    <p class="resource-description">24/7 support from agricultural experts for pest issues, crop problems, and farming queries.</p>
-                    <a href="#" class="resource-link">Contact Expert →</a>
-                </div>
-
-                <div class="resource-card">
-                    <div class="resource-icon">🚰</div>
-                    <h3 class="resource-title">Irrigation Solutions</h3>
-                    <p class="resource-description">Learn about drip irrigation, sprinklers, and water conservation techniques for efficient farming.</p>
-                    <a href="#" class="resource-link">Explore Options →</a>
-                </div>
-            </div>
-
-            <!-- Advertisement Space -->
-            <div class="ad-space">
-                <h3>Advertisement Space</h3>
-                <p>Your ads can appear here</p>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let selectedFile = null;
-        let isPhotoUploaded = false;
-
-        function showPage(pageId) {
-            const pages = document.querySelectorAll('.page');
-            pages.forEach(page => page.classList.remove('active'));
-            
-            const navLinks = document.querySelectorAll('.nav-menu a');
-            navLinks.forEach(link => link.classList.remove('active'));
-            
-            document.getElementById(pageId).classList.add('active');
-            event.target.classList.add('active');
-            
-            window.scrollTo(0, 0);
-        }
-
-        function previewFile() {
-            const file = document.getElementById('fileInput').files[0];
-            const reader = new FileReader();
-
-            if (file) {
-                selectedFile = file;
-                reader.onload = function(e) {
-                    const preview = document.getElementById('previewImage');
-                    const uploadBox = document.getElementById('uploadBox');
-                    const uploadControls = document.getElementById('uploadControls');
-                    
-                    preview.src = e.target.result;
-                    preview.classList.add('show');
-                    uploadBox.classList.add('has-image');
-                    uploadControls.classList.add('show');
-                    
-                    uploadBox.querySelector('.upload-icon').style.display = 'none';
-                    uploadBox.querySelector('.upload-text').style.display = 'none';
-                    uploadBox.querySelector('.upload-hint').style.display = 'none';
-                    
-                    isPhotoUploaded = false;
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function uploadPhoto() {
-            if (selectedFile) {
-                isPhotoUploaded = true;
-                
-                const uploadBtn = document.querySelector('.upload-btn');
-                uploadBtn.textContent = 'Photo Uploaded ✓';
-                uploadBtn.style.background = '#4a7c2c';
-                
-                setTimeout(() => {
-                    alert('Photo uploaded successfully! You can now submit your enquiry.');
-                }, 300);
-            }
-        }
-
-        function changePhoto() {
-            document.getElementById('fileInput').click();
-        }
-
-        function getWeather() {
-            const city = document.getElementById('cityInput').value;
-            const weatherInfo = document.getElementById('weatherInfo');
-            
-            if (city.trim() === '') {
-                alert('Please enter a city name');
-                return;
-            }
-            
-            const weatherData = {
-                temp: Math.floor(Math.random() * 15) + 20,
-                condition: ['Sunny', 'Cloudy', 'Rainy', 'Partly Cloudy'][Math.floor(Math.random() * 4)],
-                humidity: Math.floor(Math.random() * 40) + 40,
-                wind: Math.floor(Math.random() * 15) + 5,
-                rainfall: Math.floor(Math.random() * 30)
-            };
-            
-            const icons = {
-                'Sunny': '☀️',
-                'Cloudy': '☁️',
-                'Rainy': '🌧️',
-                'Partly Cloudy': '⛅'
-            };
-            
-            const advice = {
-                'Sunny': 'Good for harvesting and field work',
-                'Cloudy': 'Suitable for spraying pesticides',
-                'Rainy': 'Avoid fertilizer application',
-                'Partly Cloudy': 'Perfect for transplanting'
-            };
-            
-            weatherInfo.innerHTML = `
-                <div class="weather-icon">${icons[weatherData.condition]}</div>
-                <h2 style="font-size: 32px; color: #2c1810; margin-bottom: 10px;">${city}</h2>
-                <h1 style="font-size: 56px; margin: 15px 0; color: #4a7c2c;">${weatherData.temp}°C</h1>
-                <p style="font-size: 24px; color: #5a4a3a; margin-bottom: 30px; font-weight: 600;">${weatherData.condition}</p>
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin-top: 30px; text-align: center;">
-                    <div style="padding: 15px; background: #faf7f2; border-radius: 8px;">
-                        <div style="font-size: 30px; margin-bottom: 8px;">💧</div>
-                        <div style="font-size: 14px; color: #8b8b8b; margin-bottom: 5px;">Humidity</div>
-                        <div style="font-size: 20px; font-weight: 600; color: #2c1810;">${weatherData.humidity}%</div>
-                    </div>
-                    <div style="padding: 15px; background: #faf7f2; border-radius: 8px;">
-                        <div style="font-size: 30px; margin-bottom: 8px;">💨</div>
-                        <div style="font-size: 14px; color: #8b8b8b; margin-bottom: 5px;">Wind Speed</div>
-                        <div style="font-size: 20px; font-weight: 600; color: #2c1810;">${weatherData.wind} km/h</div>
-                    </div>
-                    <div style="padding: 15px; background: #faf7f2; border-radius: 8px;">
-                        <div style="font-size: 30px; margin-bottom: 8px;">🌧️</div>
-                        <div style="font-size: 14px; color: #8b8b8b; margin-bottom: 5px;">Rainfall</div>
-                        <div style="font-size: 20px; font-weight: 600; color: #2c1810;">${weatherData.rainfall}%</div>
-                    </div>
-                </div>
-                <div style="margin-top: 30px; padding: 20px; background: #e8f5e9; border-radius: 8px; border-left: 4px solid #4a7c2c;">
-                    <div style="font-size: 16px; color: #2c1810; font-weight: 600; margin-bottom: 5px;">Farming Advice</div>
-                    <div style="font-size: 15px; color: #5a4a3a;">${advice[weatherData.condition]}</div>
-                </div>
-            `;
-        }
-
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            if (selectedFile && !isPhotoUploaded) {
-                alert('Please upload the photo before submitting the form.');
-                return;
-            }
-            
-            alert('Thank you for your enquiry! Our team will contact you within 24 hours.');
-            this.reset();
-            
-            const preview = document.getElementById('previewImage');
-            const uploadBox = document.getElementById('uploadBox');
-            const uploadControls = document.getElementById('uploadControls');
-            
-            preview.classList.remove('show');
-            uploadBox.classList.remove('has-image');
-            uploadControls.classList.remove('show');
-            
-            uploadBox.querySelector('.upload-icon').style.display = 'block';
-            uploadBox.querySelector('.upload-text').style.display = 'block';
-            uploadBox.querySelector('.upload-hint').style.display = 'block';
-            
-            selectedFile = null;
-            isPhotoUploaded = false;
-        });
-
-        document.getElementById('cityInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                getWeather();
-            }
-        });
-    </script>
 </body>
 </html>
