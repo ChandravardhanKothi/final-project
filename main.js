@@ -488,15 +488,15 @@ storageContactBtns.forEach(btn => {
     });
 });
 
-// ===== SCHEME CARDS =====
-const schemeCards = document.querySelectorAll('.scheme-card');
-schemeCards.forEach(card => {
-    card.addEventListener('click', function(e) {
-        e.preventDefault();
-        const schemeName = this.querySelector('h3').textContent;
-        alert(`Redirecting to application page for ${schemeName}...\n\nIn a real application, this would open the MeeSeva portal or government website.`);
-    });
-});
+// // ===== SCHEME CARDS =====
+// const schemeCards = document.querySelectorAll('.scheme-card');
+// schemeCards.forEach(card => {
+//     card.addEventListener('click', function(e) {
+//         e.preventDefault();
+//         const schemeName = this.querySelector('h3').textContent;
+//         alert(`Redirecting to application page for ${schemeName}...\n\nIn a real application, this would open the MeeSeva portal or government website.`);
+//     });
+// });
 
 // ===== PRODUCT BUY BUTTONS =====
 const buyBtns = document.querySelectorAll('.buy-btn');
@@ -571,6 +571,7 @@ document.querySelectorAll('.feature-card, .news-card, .resource-card, .profit-ca
     card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
     observer.observe(card);
 });
+
 
 // ===== CONSOLE LOG =====
 console.log('Agri-advisory agent initialized successfully!');
