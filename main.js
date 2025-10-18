@@ -1,8 +1,10 @@
 // ===== GLOBAL VARIABLES =====
 let selectedFile = null;
+let enquiryImageData = null;
 let isPhotoUploaded = false;
 let currentMonth = new Date().getMonth();
 let currentYear = new Date().getFullYear();
+let machineryImageData = null;
 
 // ===== PAGE NAVIGATION =====
 document.addEventListener('DOMContentLoaded', function() {
@@ -20,10 +22,8 @@ function initializeNavigation() {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             
-            // Get the target page from href
             const targetPage = this.getAttribute('href').substring(1);
             
-            // Remove active class from all pages and links
             document.querySelectorAll('.page').forEach(page => {
                 page.classList.remove('active');
             });
@@ -32,11 +32,9 @@ function initializeNavigation() {
                 navLink.classList.remove('active');
             });
             
-            // Add active class to clicked link and target page
             this.classList.add('active');
             document.getElementById(targetPage).classList.add('active');
             
-            // Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     });
@@ -60,13 +58,11 @@ function initializeEnquiryForm() {
         fileInput.addEventListener('change', previewFile);
     }
     
-    // Upload button
     const uploadBtn = document.querySelector('.upload-btn');
     if (uploadBtn) {
         uploadBtn.addEventListener('click', uploadPhoto);
     }
     
-    // Change button
     const changeBtn = document.querySelector('.change-btn');
     if (changeBtn) {
         changeBtn.addEventListener('click', function() {
@@ -74,7 +70,6 @@ function initializeEnquiryForm() {
         });
     }
     
-    // Form submission
     if (contactForm) {
         contactForm.addEventListener('submit', handleFormSubmit);
     }
@@ -88,16 +83,16 @@ function previewFile() {
     if (file) {
         selectedFile = file;
         reader.onload = function(e) {
+            enquiryImageData = e.target.result;
             const preview = document.getElementById('previewImage');
             const uploadBox = document.getElementById('uploadBox');
             const uploadControls = document.getElementById('uploadControls');
             
-            preview.src = e.target.result;
+            preview.src = enquiryImageData;
             preview.classList.add('show');
             uploadBox.classList.add('has-image');
             uploadControls.classList.add('show');
             
-            // Hide upload instructions
             const uploadIcon = uploadBox.querySelector('.upload-icon');
             const uploadText = uploadBox.querySelector('.upload-text');
             const uploadHint = uploadBox.querySelector('.upload-hint');
@@ -136,11 +131,145 @@ function handleFormSubmit(e) {
         return;
     }
     
-    alert('Thank you for your enquiry! Our team will contact you within 24 hours.');
+    const message = document.getElementById('message').value;
+    
+    // Show response with image and information
+    displayEnquiryResponse(enquiryImageData, message);
     
     // Reset form
     e.target.reset();
     resetPhotoUpload();
+}
+
+function displayEnquiryResponse(imageData, query) {
+    // Create response container
+    let responseContainer = document.getElementById('enquiry-response-container');
+    
+    if (!responseContainer) {
+        responseContainer = document.createElement('div');
+        responseContainer.id = 'enquiry-response-container';
+        responseContainer.className = 'enquiry-response-container';
+        
+        const enquiryContainer = document.querySelector('.enquiry-container');
+        const adSpace = enquiryContainer.querySelector('.ad-space');
+        enquiryContainer.insertBefore(responseContainer, adSpace);
+    }
+    
+    // Generate mock response based on query
+    const response = generateMockResponse(query);
+    
+    const responseHTML = `
+        <div class="response-card">
+            <div class="response-header">
+                <h2>🌱 Analysis Result</h2>
+                <span class="response-time">${new Date().toLocaleString()}</span>
+            </div>
+            <div class="response-content">
+                ${imageData ? `
+                <div class="response-image-container">
+                    <img src="${imageData}" alt="Uploaded crop image" class="response-image">
+                </div>
+                ` : ''}
+                <div class="response-details">
+                    <div class="query-section">
+                        <h3>Your Query:</h3>
+                        <p>${query}</p>
+                    </div>
+                    <div class="analysis-section">
+                        <h3>Our Analysis:</h3>
+                        <p>${response.analysis}</p>
+                    </div>
+                    ${response.diagnosis ? `
+                    <div class="diagnosis-section">
+                        <h3>🔍 Diagnosis:</h3>
+                        <p class="diagnosis-highlight">${response.diagnosis}</p>
+                    </div>
+                    ` : ''}
+                    <div class="recommendations-section">
+                        <h3>💡 Recommendations:</h3>
+                        <ul>
+                            ${response.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    responseContainer.innerHTML = responseHTML;
+    responseContainer.style.display = 'block';
+    
+    // Scroll to response
+    setTimeout(() => {
+        responseContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 100);
+}
+
+function generateMockResponse(query) {
+    // Simple keyword-based response generation
+    const lowerQuery = query.toLowerCase();
+    
+    if (lowerQuery.includes('disease') || lowerQuery.includes('leaf') || lowerQuery.includes('spot') || lowerQuery.includes('yellow')) {
+        return {
+            analysis: "Based on your image and description, we've analyzed the crop condition carefully.",
+            diagnosis: "Possible Leaf Spot Disease or Nutrient Deficiency detected",
+            recommendations: [
+                "Remove and destroy affected leaves immediately",
+                "Apply fungicide spray (Mancozeb or Copper-based) every 7-10 days",
+                "Ensure proper drainage in the field",
+                "Apply balanced NPK fertilizer to boost plant immunity",
+                "Monitor surrounding plants for similar symptoms"
+            ]
+        };
+    } else if (lowerQuery.includes('pest') || lowerQuery.includes('insect') || lowerQuery.includes('worm')) {
+        return {
+            analysis: "Your crop shows signs of pest infestation that requires immediate attention.",
+            diagnosis: "Pest Infestation - Early intervention recommended",
+            recommendations: [
+                "Apply neem oil spray (5ml per liter) in early morning or evening",
+                "Use biological control - introduce natural predators if possible",
+                "Remove severely damaged parts to prevent spread",
+                "Install yellow sticky traps to monitor pest population",
+                "Maintain field hygiene by removing crop residues"
+            ]
+        };
+    } else if (lowerQuery.includes('fertilizer') || lowerQuery.includes('nutrient') || lowerQuery.includes('growth')) {
+        return {
+            analysis: "Your query about plant nutrition and growth has been processed.",
+            diagnosis: null,
+            recommendations: [
+                "Apply NPK fertilizer at recommended doses: 120:60:40 kg/ha for most crops",
+                "Use organic manure (FYM) @ 10 tons/ha for soil health",
+                "Apply micronutrients (Zinc, Boron) if deficiency symptoms appear",
+                "Split nitrogen application into 3 doses for better utilization",
+                "Conduct soil testing every season for precise recommendations"
+            ]
+        };
+    } else if (lowerQuery.includes('water') || lowerQuery.includes('irrigation') || lowerQuery.includes('drought')) {
+        return {
+            analysis: "Water management is crucial for optimal crop growth and yield.",
+            diagnosis: null,
+            recommendations: [
+                "Implement drip irrigation for water efficiency (50-60% water saving)",
+                "Apply mulch to reduce evaporation and maintain soil moisture",
+                "Irrigate during critical growth stages: flowering and grain filling",
+                "Monitor soil moisture regularly - water when 50% available water is depleted",
+                "Create proper drainage channels to prevent waterlogging"
+            ]
+        };
+    } else {
+        return {
+            analysis: "Thank you for your enquiry. Our agricultural experts have reviewed your query.",
+            diagnosis: null,
+            recommendations: [
+                "Maintain proper crop spacing for good air circulation",
+                "Regular monitoring of crop health is essential",
+                "Follow integrated pest management (IPM) practices",
+                "Ensure timely application of fertilizers and pesticides",
+                "Contact your local agricultural extension office for personalized advice"
+            ]
+        };
+    }
 }
 
 function resetPhotoUpload() {
@@ -161,6 +290,7 @@ function resetPhotoUpload() {
     if (uploadHint) uploadHint.style.display = 'block';
     
     selectedFile = null;
+    enquiryImageData = null;
     isPhotoUploaded = false;
     
     const uploadBtn = document.querySelector('.upload-btn');
@@ -218,7 +348,6 @@ function renderCalendar() {
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
     const today = new Date();
     
-    // Add empty cells for days before month starts
     for (let i = 0; i < firstDay; i++) {
         const emptyDiv = document.createElement('div');
         emptyDiv.className = 'calendar-date';
@@ -226,13 +355,11 @@ function renderCalendar() {
         calendarDates.appendChild(emptyDiv);
     }
     
-    // Add days of month
     for (let day = 1; day <= daysInMonth; day++) {
         const dateDiv = document.createElement('div');
         dateDiv.className = 'calendar-date';
         dateDiv.textContent = day;
         
-        // Check if today
         if (day === today.getDate() && 
             currentMonth === today.getMonth() && 
             currentYear === today.getFullYear()) {
@@ -240,15 +367,11 @@ function renderCalendar() {
         }
         
         dateDiv.addEventListener('click', function() {
-            // Remove selected from all dates
             document.querySelectorAll('.calendar-date').forEach(d => {
                 d.classList.remove('selected');
             });
             
-            // Add selected to clicked date
             this.classList.add('selected');
-            
-            // Show selected date info
             showSelectedDateInfo(day, currentMonth, currentYear);
         });
         
@@ -266,17 +389,12 @@ function showSelectedDateInfo(day, month, year) {
     if (selectedDateSection && selectedDateDisplay) {
         selectedDateDisplay.textContent = `${monthNames[month]} ${day}, ${year}`;
         selectedDateSection.style.display = 'block';
-        
-        // Simulate weather data (in real app, this would come from API)
         updateWeatherDisplay();
-        
-        // Scroll to the section
         selectedDateSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 }
 
 function updateWeatherDisplay() {
-    // Simulate random weather data
     const conditions = ['Sunny', 'Partly Cloudy', 'Cloudy', 'Rainy'];
     const icons = ['☀️', '⛅', '☁️', '🌧️'];
     const randomIndex = Math.floor(Math.random() * conditions.length);
@@ -320,7 +438,6 @@ function generateCropPlan(crop, duration, startDate, landSize) {
     const generatedPlan = document.getElementById('generated-plan');
     if (!generatedPlan) return;
     
-    // Calculate harvest date
     const start = new Date(startDate);
     const durationDays = {
         'short': 75,
@@ -333,7 +450,6 @@ function generateCropPlan(crop, duration, startDate, landSize) {
     const harvestDate = new Date(start);
     harvestDate.setDate(harvestDate.getDate() + days);
     
-    // Update plan summary
     document.getElementById('plan-crop').textContent = crop.charAt(0).toUpperCase() + crop.slice(1);
     document.getElementById('plan-duration').textContent = `${days} days`;
     document.getElementById('plan-start').textContent = start.toLocaleDateString('en-US', { 
@@ -343,28 +459,8 @@ function generateCropPlan(crop, duration, startDate, landSize) {
         year: 'numeric', month: 'long', day: 'numeric' 
     });
     
-    // Show the plan
     generatedPlan.style.display = 'block';
-    
-    // Scroll to plan
     generatedPlan.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-
-// ===== API CONFIGURATION =====
-const apiSaveBtn = document.querySelector('.api-save-btn');
-if (apiSaveBtn) {
-    apiSaveBtn.addEventListener('click', function() {
-        const apiKey = document.getElementById('weather-api-key').value;
-        const location = document.getElementById('location-input').value;
-        
-        if (!apiKey || !location) {
-            alert('Please enter both API key and location');
-            return;
-        }
-        
-        // Store in memory (not localStorage as per restrictions)
-        alert('Configuration saved successfully!');
-    });
 }
 
 // ===== DOWNLOAD PLAN =====
@@ -383,13 +479,11 @@ function initializeOtherPageTabs() {
         pill.addEventListener('click', function() {
             const targetSection = this.getAttribute('data-section');
             
-            // Remove active from all pills and sections
             navPills.forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.content-section').forEach(section => {
                 section.classList.remove('active');
             });
             
-            // Add active to clicked pill and target section
             this.classList.add('active');
             const targetElement = document.getElementById(targetSection);
             if (targetElement) {
@@ -423,7 +517,6 @@ function initializeMachineryRental() {
         });
     }
     
-    // Close modal when clicking outside
     if (rentalFormModal) {
         rentalFormModal.addEventListener('click', function(e) {
             if (e.target === rentalFormModal) {
@@ -432,7 +525,6 @@ function initializeMachineryRental() {
         });
     }
     
-    // Machinery photo preview
     if (machineryPhoto) {
         machineryPhoto.addEventListener('change', function() {
             const file = this.files[0];
@@ -441,20 +533,33 @@ function initializeMachineryRental() {
             if (file && preview) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    preview.innerHTML = `<img src="${e.target.result}" style="max-width: 100%; max-height: 150px; border-radius: 8px; margin-top: 10px;">`;
+                    machineryImageData = e.target.result;
+                    preview.innerHTML = `<img src="${machineryImageData}" style="max-width: 100%; max-height: 150px; border-radius: 8px; margin-top: 10px;">`;
                 }
                 reader.readAsDataURL(file);
             }
         });
     }
     
-    // Machinery rental form submission
     if (machineryRentalForm) {
         machineryRentalForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            alert('Thank you! Your machinery listing has been submitted for review. It will be visible once approved.');
+            // Get form data
+            const formData = {
+                ownerName: document.getElementById('owner-name').value,
+                machineryType: document.getElementById('machinery-type').value,
+                price: document.getElementById('rental-price').value,
+                description: document.getElementById('machinery-description').value,
+                contact: document.getElementById('contact-number').value,
+                location: document.getElementById('location').value,
+                image: machineryImageData
+            };
             
+            // Add machinery card
+            addMachineryCard(formData);
+            
+            // Close modal and reset form
             if (rentalFormModal) {
                 rentalFormModal.style.display = 'none';
             }
@@ -464,20 +569,88 @@ function initializeMachineryRental() {
             if (preview) {
                 preview.innerHTML = '';
             }
+            machineryImageData = null;
+            
+            alert('Success! Your machinery has been added to the rental list.');
         });
     }
     
     // Contact buttons for machinery
-    const contactBtns = document.querySelectorAll('.contact-btn');
-    contactBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const card = this.closest('.machinery-card');
-            const ownerName = card.querySelector('.owner-detail span:nth-child(2)').textContent;
-            const phone = card.querySelectorAll('.owner-detail span')[5].textContent;
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('contact-btn')) {
+            const card = e.target.closest('.machinery-card');
+            const ownerName = card.querySelector('.owner-detail:nth-child(1) span:nth-child(2)').textContent;
+            const phone = card.querySelector('.owner-detail:nth-child(3) span:nth-child(2)').textContent;
             
             alert(`Contact Information:\nName: ${ownerName}\nPhone: ${phone}\n\nYou can call or message them directly.`);
-        });
+        }
     });
+}
+
+function addMachineryCard(data) {
+    const machineryGrid = document.querySelector('.machinery-grid');
+    
+    // Get machinery type display name
+    const typeNames = {
+        'tractor': 'Tractor',
+        'harvester': 'Harvester',
+        'plough': 'Plough',
+        'sprayer': 'Sprayer',
+        'seeder': 'Seed Drill',
+        'thresher': 'Thresher',
+        'rotavator': 'Rotavator',
+        'cultivator': 'Cultivator'
+    };
+    
+    const typeName = typeNames[data.machineryType] || data.machineryType;
+    
+    const newCard = document.createElement('div');
+    newCard.className = 'machinery-card';
+    newCard.style.opacity = '0';
+    newCard.style.transform = 'translateY(20px)';
+    
+    newCard.innerHTML = `
+        <div class="machinery-image-container">
+            <img src="${data.image || 'https://via.placeholder.com/350x250?text=' + typeName}" alt="${typeName}">
+            <div class="availability-badge">Available</div>
+        </div>
+        <div class="machinery-details">
+            <div class="machinery-header">
+                <h3>${typeName}</h3>
+                <div class="price-tag">₹${data.price}/day</div>
+            </div>
+            <p class="machinery-description">${data.description}</p>
+            <div class="owner-info">
+                <div class="owner-detail">
+                    <span class="info-icon">👤</span>
+                    <span>${data.ownerName}</span>
+                </div>
+                <div class="owner-detail">
+                    <span class="info-icon">📍</span>
+                    <span>${data.location}</span>
+                </div>
+                <div class="owner-detail">
+                    <span class="info-icon">📞</span>
+                    <span>${data.contact}</span>
+                </div>
+            </div>
+            <button class="contact-btn">Contact Owner</button>
+        </div>
+    `;
+    
+    machineryGrid.insertBefore(newCard, machineryGrid.firstChild);
+    
+    // Animate the new card
+    setTimeout(() => {
+        newCard.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        newCard.style.opacity = '1';
+        newCard.style.transform = 'translateY(0)';
+    }, 100);
+    
+    // Scroll to the new card
+    setTimeout(() => {
+        newCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 200);
 }
 
 // ===== STORAGE CONTACT =====
@@ -488,16 +661,6 @@ storageContactBtns.forEach(btn => {
     });
 });
 
-// // ===== SCHEME CARDS =====
-// const schemeCards = document.querySelectorAll('.scheme-card');
-// schemeCards.forEach(card => {
-//     card.addEventListener('click', function(e) {
-//         e.preventDefault();
-//         const schemeName = this.querySelector('h3').textContent;
-//         alert(`Redirecting to application page for ${schemeName}...\n\nIn a real application, this would open the MeeSeva portal or government website.`);
-//     });
-// });
-
 // ===== PRODUCT BUY BUTTONS =====
 const buyBtns = document.querySelectorAll('.buy-btn');
 buyBtns.forEach(btn => {
@@ -507,16 +670,6 @@ buyBtns.forEach(btn => {
         const price = card.querySelector('.current-price').textContent;
         
         alert(`Adding ${productName} to cart at ${price}\n\nIn a real application, this would add the product to your shopping cart.`);
-    });
-});
-
-// ===== RESOURCE LINKS =====
-const resourceLinks = document.querySelectorAll('.resource-link');
-resourceLinks.forEach(link => {
-    link.addEventListener('click', function(e) {
-        e.preventDefault();
-        const title = this.closest('.resource-card').querySelector('.resource-title').textContent;
-        alert(`Opening ${title} section...\n\nIn a real application, this would navigate to the detailed ${title.toLowerCase()} page.`);
     });
 });
 
@@ -564,7 +717,6 @@ const observer = new IntersectionObserver(function(entries) {
     });
 }, observerOptions);
 
-// Observe cards and sections for animation
 document.querySelectorAll('.feature-card, .news-card, .resource-card, .profit-card, .machinery-card, .storage-card, .scheme-card, .product-card').forEach(card => {
     card.style.opacity = '0';
     card.style.transform = 'translateY(20px)';
@@ -572,8 +724,6 @@ document.querySelectorAll('.feature-card, .news-card, .resource-card, .profit-ca
     observer.observe(card);
 });
 
-
-// ===== CONSOLE LOG =====
 console.log('Agri-advisory agent initialized successfully!');
 console.log('Current date:', new Date().toLocaleDateString());
 console.log('All features loaded and ready to use.');
